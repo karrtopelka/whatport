@@ -1,0 +1,92 @@
+name: WhatPort
+options:
+  bundleIdPrefix: com.karrtopelka
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: false
+  xcodeVersion: "26.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_APP_SANDBOX: NO
+    SWIFT_INCLUDE_PATHS: "$(SRCROOT)/Sources/CSystem"
+    DEAD_CODE_STRIPPING: YES
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+    GCC_TREAT_WARNINGS_AS_ERRORS: NO
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+  configs:
+    Debug:
+      ONLY_ACTIVE_ARCH: YES
+    Release:
+      ONLY_ACTIVE_ARCH: NO
+      SWIFT_COMPILATION_MODE: wholemodule
+targets:
+  WhatPort:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/WhatPort
+        excludes:
+          - "Info.plist"
+      - path: Sources/CSystem
+        buildPhase: none
+    info:
+      path: Sources/WhatPort/Info.plist
+      properties:
+        CFBundleName: WhatPort
+        CFBundleDisplayName: WhatPort
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.developer-tools
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSHumanReadableCopyright: "MIT License"
+        NSSupportsAutomaticTermination: false
+        NSSupportsSuddenTermination: false
+    entitlements:
+      path: Sources/WhatPort/WhatPort.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_NAME: WhatPort
+        PRODUCT_BUNDLE_IDENTIFIER: com.karrtopelka.whatport
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        COMBINE_HIDPI_IMAGES: YES
+        SWIFT_OBJC_INTEROP_MODE: objc
+        INFOPLIST_KEY_LSUIElement: YES
+  WhatPortTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/WhatPortTests
+    dependencies:
+      - target: WhatPort
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.karrtopelka.whatport.tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  WhatPort:
+    build:
+      targets:
+        WhatPort: all
+        WhatPortTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - WhatPortTests
+    archive:
+      config: Release

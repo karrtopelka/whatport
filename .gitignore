@@ -1,0 +1,13 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+.DS_Store
+# Build output
+dist/
+*.dSYM
+# Scratch
+*.log
